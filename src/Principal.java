@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -32,6 +35,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         cmdCalcular = new javax.swing.JButton();
+        cmdBorrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,10 +43,18 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("Ingrese el Numero de dias para su Estadía");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 270, 20));
+
+        txtDias.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDiasKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtDias, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 110, -1));
 
         jLabel2.setText("Monto a Pagar");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 220, 20));
+
+        txtTotal.setEditable(false);
         jPanel1.add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, 110, -1));
 
         cmdCalcular.setText("Calcular");
@@ -52,6 +64,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cmdCalcular, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 90, -1));
+
+        cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBorrarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cmdBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 220, 80, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,21 +91,43 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtDiasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiasKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDiasKeyTyped
+
     private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
         // TODO add your handling code here:
         String res;
         double dias, habit, primer, resto, total;
-        
-        dias = Double.parseDouble(txtDias.getText());
-        
-        primer = dias - 1;
-        habit  = primer * 200000;
-        total  = habit + 100000;
-        
-        res = String.valueOf(total);
-        txtTotal.setText(res);
-         
+
+        if (txtDias.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite por favor el número de dias", "Error", JOptionPane.ERROR_MESSAGE);
+            txtDias.requestFocusInWindow();
+        } else {
+
+            dias = Double.parseDouble(txtDias.getText());
+
+            primer = dias - 1;
+            habit  = primer * 200000;
+            total  = habit + 100000;
+
+            res = String.valueOf(total);
+            txtTotal.setText(res);
+        }
     }//GEN-LAST:event_cmdCalcularActionPerformed
+
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
+        // TODO add your handling code here:
+        txtDias.setText("");
+        txtTotal.setText("");
+        txtDias.requestFocusInWindow();
+
+    }//GEN-LAST:event_cmdBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -123,6 +165,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmdBorrar;
     private javax.swing.JButton cmdCalcular;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
